@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { RiDeleteBin5Line } from "react-icons/ri";
 
 
-const Cart = ({ product }) => {
+const Cart = ({ product, handleRemoveFromCart }) => {
     const { img, name, price, shipping } = product
     // console.log(product);
     return (
@@ -16,7 +16,7 @@ const Cart = ({ product }) => {
                 </div>
             </div>
             <div className='bg-red-400 rounded-full w-12 h-12 flex justify-center items-center'>
-                <button><RiDeleteBin5Line className='text-3xl text-red-800' /></button>
+                <button onClick={() => handleRemoveFromCart(product.id)}><RiDeleteBin5Line className='text-3xl text-red-800' /></button>
             </div>
         </div>
     );
@@ -24,6 +24,7 @@ const Cart = ({ product }) => {
 
 Cart.propTypes = {
     product: PropTypes.object.isRequired,
+    handleRemoveFromCart:PropTypes.func.isRequired,
 };
 
 export default Cart;

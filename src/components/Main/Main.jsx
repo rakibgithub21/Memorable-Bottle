@@ -2,36 +2,30 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Product from "../../Product/Product";
 import Cart from "../../Cart/Cart";
-import { addToLS, getStoredCart } from "../../utilities/utilities";
+import { addToLS, getStoredCart, removeFromLS } from "../../utilities/utilities";
 
 
 const Main = () => {
     const [products, setProducts] = useState([]);
     useEffect(() => {
         fetch('bottle.json')
-        .then(res => res.json())
-        .then(data => {
-            setProducts(data);
+            .then(res => res.json())
+            .then(data => {
+                setProducts(data);
             })
     }, [])
 
-    // load cart from LS
     useEffect(() => {
-        if (products.length > 0) {
+        if (products.length) {
             const storedCart = getStoredCart();
-            const saveCart = [];
+            const savedCart = []
             for (const id of storedCart) {
                 const product = products.find(product => product.id === id);
-                if (product) {
-                    saveCart.push(product)
-                }
+                savedCart.push(product)
             }
-            console.log('save cart', saveCart);
-            setCart(saveCart);
-
+            setCart(savedCart)
         }
-        
-    },[products])
+    }, [products])
 
 
     const [cart, setCart] = useState([])
@@ -54,6 +48,14 @@ const Main = () => {
     }
     // console.log(cart);
 
+    const handleRemoveFromCart = (id) => {
+        // remove form cart
+        const remainingCart = cart.filter(bottle => bottle.id !== id);
+        setCart(remainingCart)
+        // remove form ls
+        removeFromLS(id);
+    }
+
     return (
         <div className="container mx-auto flex gap-5 my-14">
             <div className="w-4/6 ">
@@ -71,15 +73,16 @@ const Main = () => {
             <div className="w-2/6 bg-amber-100 p-5 h-[650px] overflow-auto sticky top-0">
                 <h3 className="text-center text-2xl font-semibold underline">Order Summary</h3>
                 <p className=" text-lg font-medium">Selected Items: {cart.length}</p>
-                <h3 className= "font-medium">Total Price: {Total}</h3>
-            {
-                cart.map((product, id) => <Cart
-                    key={id}
-                    product={product}
-                ></Cart>)
-            }
+                <h3 className="font-medium">Total Price: {Total}</h3>
+                {
+                    cart.map((product, id) => <Cart
+                        key={id}
+                        product={product}
+                        handleRemoveFromCart={handleRemoveFromCart}
+                    ></Cart>)
+                }
 
-        </div>
+            </div>
         </div >
     );
 };
