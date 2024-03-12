@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
-const Product = ({ product }) => {
-    console.log(product);
+const Product = ({ product, handleButtonClicked }) => {
+    // console.log(product);
     const { img, name, price, ratings, shipping } = product;
     return (
         <div className="card relative bg-base-100 shadow-xl h-[500px] h- md:h-[450px] lg:h-[530px]">
@@ -13,15 +13,16 @@ const Product = ({ product }) => {
                 <p className='text-[#0d5581d8] font-medium'>Shipping: ${shipping} </p>
 
                 <div className='absolute w-full bottom-0 left-0 p-5'>
-                    <button className="btn w-full btn-primary">Buy Now</button>
+                    <button onClick={() => handleButtonClicked(product)} className="btn w-full btn-primary">Buy Now</button>
                 </div>
             </div>
         </div>
     );
 };
 
-Product.propTypes = {
-    product: PropTypes.obj,
-}
 
+Product.propTypes = {
+    product: PropTypes.object.isRequired, // or any other appropriate type
+    handleButtonClicked: PropTypes.func,
+};
 export default Product;
