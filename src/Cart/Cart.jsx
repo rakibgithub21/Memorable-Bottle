@@ -11,8 +11,8 @@ const Cart = ({ product }) => {
                 <img className='w-14 h-14 rounded-full' src={img} alt="" />
                 <div>
                     <h3>{name}</h3>
-                    <h5>Price: {price}</h5>
-                    <p>Shipping: {shipping}</p>
+                    <h5>Price: $ <span className='text-[#614b2bc5] font-medium'>{price}</span></h5>
+                    <p>Shipping: $ <span className='text-[#614b2bc5] font-medium'>{shipping}</span> </p>
                 </div>
             </div>
             <div className='bg-red-400 rounded-full w-12 h-12 flex justify-center items-center'>
