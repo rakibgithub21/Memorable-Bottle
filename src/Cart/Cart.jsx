@@ -6,7 +6,7 @@ const Cart = ({ product }) => {
     const { img, name, price, shipping } = product
     // console.log(product);
     return (
-        <div className='flex justify-between items-center p-2 my-3 bg-slate-300 rounded-2xl'>
+        <div className='flex  justify-between items-center p-2 my-3 bg-slate-300 rounded-2xl'>
             <div className='flex gap-5 items-center'>
                 <img className='w-14 h-14 rounded-full' src={img} alt="" />
                 <div>

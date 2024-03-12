@@ -2,34 +2,54 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Product from "../../Product/Product";
 import Cart from "../../Cart/Cart";
+import { addToLS, getStoredCart } from "../../utilities/utilities";
 
 
 const Main = () => {
     const [products, setProducts] = useState([]);
     useEffect(() => {
         fetch('bottle.json')
-            .then(res => res.json())
-            .then(data => {
-                setProducts(data);
+        .then(res => res.json())
+        .then(data => {
+            setProducts(data);
             })
     }, [])
+
+    // load cart from LS
+    useEffect(() => {
+        if (products.length > 0) {
+            const storedCart = getStoredCart();
+            const saveCart = [];
+            for (const id of storedCart) {
+                const product = products.find(product => product.id === id);
+                if (product) {
+                    saveCart.push(product)
+                }
+            }
+            console.log('save cart', saveCart);
+            setCart(saveCart);
+
+        }
+        
+    },[products])
 
 
     const [cart, setCart] = useState([])
 
     let Total = 0;
     for (const product of cart) {
-        Total = Total +  product.price + product.shipping
+        Total = Total + product.price + product.shipping
     }
 
     const handleButtonClicked = (product) => {
         if (cart.includes(product)) {
-            setCart([...cart])
+            setCart([...cart]);
             alert('You select this')
         }
         else {
             const newCart = [...cart, product];
             setCart(newCart)
+            addToLS(product.id)
         }
     }
     // console.log(cart);
@@ -51,16 +71,16 @@ const Main = () => {
             <div className="w-2/6 bg-amber-100 p-5 h-[650px] overflow-auto sticky top-0">
                 <h3 className="text-center text-2xl font-semibold underline">Order Summary</h3>
                 <p className=" text-lg font-medium">Selected Items: {cart.length}</p>
-                <h3>Total Price: { Total}</h3>
-                {
-                    cart.map((product, id) => <Cart
-                        key={id}
-                        product={product}
-                    ></Cart>)
-                }
-                
-            </div>
+                <h3 className= "font-medium">Total Price: {Total}</h3>
+            {
+                cart.map((product, id) => <Cart
+                    key={id}
+                    product={product}
+                ></Cart>)
+            }
+
         </div>
+        </div >
     );
 };
 
